@@ -1,6 +1,5 @@
 #!/bin/bash
 echo "Mounika shell script starts"
-#!/bin/bash
 
 # Set environment variables
 export MOSQUITTO_CONTAINER_NAME=mosquitto
@@ -42,4 +41,5 @@ docker run -d \
   --env NODE_EXTRA_CA_CERTS=/management-center/certs/magna_global_fullchain.pem \
   --restart unless-stopped  \
   cedalo/management-center:2.3.13
+  
 echo "Mounika shell script Ends"
