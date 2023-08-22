@@ -41,7 +41,10 @@ jobs:
           -out $CSR_commonName.csr
           echo "::$CSR_commonName.key got created"
           echo "::$CSR_commonName.csr got created"
-          echo "ls -lrt"
+          echo "pwd"
+          pwd
+          ls -lrt
+          echo ls -lrt
           echo "Cert creation ends"
         shell: bash
 
