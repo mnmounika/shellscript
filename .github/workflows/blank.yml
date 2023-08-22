@@ -5,6 +5,12 @@ on: [push]  # You can customize the trigger event(s) here
 jobs:
   install-docker:
     runs-on: ubuntu-latest  # You can choose a different OS if needed
+    env:
+      CSR_countryName: "US"
+      CSR_stateOrProvinceName: "Michigan"
+      CSR_localityName: "Troy"
+      CSR_organizationalUnitName: "Vehma International"
+      CSR_commonName: "cse-plant1-uns.magna.global"
 
     steps:
       - name: Checkout Repository
@@ -20,6 +26,24 @@ jobs:
 
       - name: Clean Up
         run: rm get-docker.sh
+
+      - name: Generate certificate
+        run: |
+         echo "Cert creation starts" 
+          openssl req \
+          -nodes \
+          -newkey rsa:2048 \
+          -subj "/C=$CSR_countryName/ST=$CSR_stateOrProvinceName/L=$CSR_localityName/O=Magna International/OU=$CSR_organizationalUnitName/CN=$CSR_commonName" \
+          -addext "keyUsage = digitalSignature, keyEncipherment" \
+          -addext "extendedKeyUsage = serverAuth, clientAuth" \
+          -addext "subjectAltName = DNS:$CSR_commonName" \
+          -keyout $CSR_commonName.key \
+          -out $CSR_commonName.csr
+          echo "::$CSR_commonName.key got created"
+          echo "::$CSR_commonName.csr got created"
+          echo "ls -lrt"
+          echo "Cert creation ends"
+        shell: bash
 
       - name: Run script file
         run: |
