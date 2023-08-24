@@ -47,9 +47,3 @@ jobs:
           echo ls -lrt
           echo "Cert creation ends"
         shell: bash
-
-      - name: Run script file
-        run: |
-           chmod +x ./test.sh
-           ./test.sh
-        shell: bash
