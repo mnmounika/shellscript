@@ -49,5 +49,6 @@ jobs:
         shell: bash
       - name: Create folder
         run: |
-           sudo mkdir -p /opt/mosquitto/certs && cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
+           sudo mkdir -p /opt/mosquitto/certs && /opt/mosquitto/config && /opt/mosquitto/data cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
            ls /opt/mosquitto/certs
+           ls /opt/mosquitto/
