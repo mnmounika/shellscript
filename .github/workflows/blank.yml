@@ -51,4 +51,3 @@ jobs:
         run: |
            sudo mkdir -p /opt/mosquitto/certs && cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
            ls /opt/mosquitto/certs
-	   echo "creating directory and copy Ends"
