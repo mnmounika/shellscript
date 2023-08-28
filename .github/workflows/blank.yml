@@ -53,11 +53,17 @@ jobs:
           echo ls -lrt
           echo "Cert creation ends"
         shell: bash
-      - name: Create folder
+      - name: Create folder certs
         run: |
-           sudo mkdir -p /opt/mosquitto/certs && /opt/mosquitto/config && /opt/mosquitto/data cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
+           sudo mkdir -p /opt/mosquitto/certs && cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
            ls /opt/mosquitto/certs
+      - name: Create directory config,data
+        run: |
+           sudo mkdir -p /opt/mosquitto/config
+           sudo mkdir -p /opt/mosquitto/data
            ls /opt/mosquitto/
+           echo "Directory creation success"
+        
       - name: Create file
         run: |
            sudo bash -c  'cat > /opt/mosquitto/config/mosquitto.conf << EOF
