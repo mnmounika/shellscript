@@ -104,6 +104,7 @@ jobs:
            --volume /opt/mosquitto/config:/mosquitto/config \
            --restart unless-stopped  \
            eclipse-mosquitto
+           echo "eclipse-mosquitto container creation success"
       - name: Create Mosquitto Admin User
         run: |
            sudo docker exec -t $MOSQUITTO_CONTAINER_NAME sh -c "mosquitto_ctrl dynsec init /mosquitto/config/dynamic-security.json $MOSQUITTO_ADMIN_USER $MOSQUITTO_ADMIN_PASSWORD"
@@ -126,3 +127,4 @@ jobs:
            --env NODE_EXTRA_CA_CERTS=/management-center/certs/magna_global_fullchain.pem \
            --restart unless-stopped  \
            cedalo/management-center:2.3.13
+           echo "cedalo-management-center container creation success"
