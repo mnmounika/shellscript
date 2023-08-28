@@ -45,7 +45,7 @@ jobs:
           echo ls -lrt
           echo "Cert creation ends"
         shell: bash
-      - name: Create folder certs
+      - name: Create directory certs
         run: |
            sudo mkdir -p /opt/mosquitto/certs && cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
            ls /opt/mosquitto/certs
@@ -56,7 +56,7 @@ jobs:
            ls /opt/mosquitto/
            echo "Directory creation success"
         
-      - name: Create file
+      - name: Create .conf file
         run: |
            sudo bash -c  'cat > /opt/mosquitto/config/mosquitto.conf << EOF
            per_listener_settings false
