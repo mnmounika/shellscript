@@ -14,17 +14,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H <REMOTE_HOST> >> ~/.ssh/known_hosts
-
-      - name: Connect to Remote Host
-        run: |
-          ssh -i ~/.ssh/id_rsa <USERNAME>@<REMOTE_HOST> "echo 'Connected via GitHub Actions'"
-
       - name: Install Docker
         run: |
           # Install Docker using the official installation script
