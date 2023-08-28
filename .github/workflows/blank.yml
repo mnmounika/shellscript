@@ -52,3 +52,37 @@ jobs:
            sudo mkdir -p /opt/mosquitto/certs && /opt/mosquitto/config && /opt/mosquitto/data cp -R  /home/runner/work/shellscript/shellscript/$CSR_commonName.key /opt/mosquitto/certs/  
            ls /opt/mosquitto/certs
            ls /opt/mosquitto/
+      - name: Create file
+        run: |
+           sudo bash -c  'cat > /opt/mosquitto/config/mosquitto.conf << EOF
+           per_listener_settings false
+           plugin /usr/lib/mosquitto_dynamic_security.so
+           plugin_opt_config_file /mosquitto/config/dynamic-security.json
+           persistence true
+           persistence_location /mosquitto/data
+           log_dest topic
+           log_dest stdout
+           log_timestamp true
+           log_timestamp_format %Y-%m-%dT%H:%M:%S%z
+           log_type all
+            
+           #MQTT Listener
+           listener 8883
+           protocol mqtt
+           certfile /mosquitto/certs/'"$CSR_commonName"'.pem
+           keyfile /mosquitto/certs/'"$CSR_commonName"'.key
+           cafile /mosquitto/certs/magna_global_fullchain.pemn
+           # minimum version of the TLS protocol
+           tls_version tlsv1.2
+            
+           #Websocket Listener
+           listener 443
+           protocol websockets
+           certfile /mosquitto/certs/'"$CSR_commonName"'.pem
+           keyfile /mosquitto/certs/'"$CSR_commonName"'.key
+           cafile /mosquitto/certs/magna_global_fullchain.pem
+           # minimum version of the TLS protocol
+           tls_version tlsv1.2
+           EOF'
+           echo "Fie creation has been completed!!!"
+        shell: bash
