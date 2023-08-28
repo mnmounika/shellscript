@@ -11,13 +11,6 @@ jobs:
       CSR_localityName: "Troy"
       CSR_organizationalUnitName: "Vehma International"
       CSR_commonName: "cse-plant1-uns.magna.global"
-      MOSQUITTO_CONTAINER_NAME: "mosquitto"
-      MOSQUITTO_ADMIN_USER: "admin-user"
-      MOSQUITTO_ADMIN_PASSWORD: "xxxxx"
-      CEDALO_ADMIN_USER: "admin"
-      CEDALO_ADMIN_PASSWORD: "xxxxx"
-      MOSQUITTO_HOSTNAME: "$CSR_commonName"
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -98,39 +91,8 @@ jobs:
            EOF'
            echo "Fie creation has been completed!!!"
         shell: bash
-
-      - name: Create Mosquitto container
+      - name: Run script file
         run: |
-           sudo docker run -d \
-           --name $MOSQUITTO_CONTAINER_NAME \
-           -p 8883:8883 \
-           -p 443:443 \
-           --volume /opt/mosquitto/certs:/mosquitto/certs \
-           --volume /opt/mosquitto/data:/mosquitto/data \
-           --volume /opt/mosquitto/config:/mosquitto/config \
-           --restart unless-stopped  \
-           eclipse-mosquitto
-           echo "eclipse-mosquitto container creation success"
-      - name: Create Mosquitto Admin User
-        run: |
-           sudo docker exec -t $MOSQUITTO_CONTAINER_NAME sh -c "mosquitto_ctrl dynsec init /mosquitto/config/dynamic-security.json $MOSQUITTO_ADMIN_USER $MOSQUITTO_ADMIN_PASSWORD"
-      - name: Restart Mosquitto Container
-        run: |
-           sudo docker restart $MOSQUITTO_CONTAINER_NAME
-      - name: Create Cedalo Container
-        run: |
-           sudo docker run -d \
-           --volume /opt/mosquitto/certs/magna_global_fullchain.pem:/management-center/certs/magna_global_fullchain.pem \
-           --name cedalo-management-center \
-           -p 8088:8088 \
-           --env CEDALO_MC_BROKER_ID=mosquitto \
-           --env CEDALO_MC_BROKER_NAME=Mosquitto \
-           --env CEDALO_MC_BROKER_URL="mqtts://${MOSQUITTO_HOSTNAME}:8883" \
-           --env CEDALO_MC_BROKER_USERNAME=$MOSQUITTO_ADMIN_USER \
-           --env CEDALO_MC_BROKER_PASSWORD=$MOSQUITTO_ADMIN_PASSWORD \
-           --env CEDALO_MC_USERNAME=$CEDALO_ADMIN_USER \
-           --env CEDALO_MC_PASSWORD=$CEDALO_ADMIN_PASSWORD \
-           --env NODE_EXTRA_CA_CERTS=/management-center/certs/magna_global_fullchain.pem \
-           --restart unless-stopped  \
-           cedalo/management-center:2.3.13
-           echo "cedalo-management-center container creation success"
+           chmod +x ./test.sh
+           ./test.sh
+        shell: bash
