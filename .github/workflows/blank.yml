@@ -23,5 +23,8 @@ jobs:
           pip install ansible
 
       - name: Run Ansible Playbook
-        run: ansible-playbook main.yml -i inventory.ini
-            
+        uses: ansible/ansible-galaxy-actions@v1
+        with:
+          args: main.yml -i inventory.ini
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
