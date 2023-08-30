@@ -1,4 +1,4 @@
-name: Run Ansible Playbook
+name: Deploy to Remote Server
 
 on:
   push:
@@ -13,17 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client
 
-      - name: Install Ansible
+      - name: Deploy to Remote Server
         run: |
-          pip install ansible
-
-      - name: Run Ansible Playbook
-        run: |
-          ansible-playbook main.yml -i inventory.ini
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: "False"
+          sshpass -p 'Pol9star@' ssh -o StrictHostKeyChecking=no mounica1@ec2-52-90-61-203.compute-1.amazonaws.com 'bash -s' < deploy_script.sh
