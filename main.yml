@@ -1,20 +1,19 @@
 ---
 - name: Deploy App to Remote Server
   hosts: all
+  environment:
+    CSR_countryName: "US"
+    CSR_stateOrProvinceName: "Michigan"
+    CSR_localityName: "Troy"
+    CSR_organizationalUnitName: "Vehma International"
+    CSR_commonName: "cse-plant1-uns.magna.global"
   tasks:
     - name: Copy files to remote server
       copy:
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
-    - name: Install Docker
-      shell: |
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
-        sudo usermod -aG docker $USER
-      args:
-        executable: /bin/bash
-
+    
     - name: Generate certificate
       shell: |
         echo "Cert creation starts"
