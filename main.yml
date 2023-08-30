@@ -37,7 +37,7 @@
         executable: /bin/bash
 
     - name: Create folder certs
-      command: >
+      shell: |
         sudo mkdir -p /home/mounica1/certs &&
         sudo cp -R /home/mounica1{{ CSR_commonName }}.key /home/mounica1/certs/
       args:
