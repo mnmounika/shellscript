@@ -43,3 +43,52 @@
         echo "::$CSR_commonName.key got Moved!!!!"
       args:
         executable: /bin/bash
+
+  - name: Create directory config,data
+      shell: |
+        sudo mkdir -p /home/mounica1/config
+        sudo mkdir -p /home/mounica1/data
+      args:
+        executable: /bin/bash
+
+    - name: Create file
+      shell: |
+        sudo bash -c 'cat > /home/mounica1/config/mosquitto.conf << EOF
+        per_listener_settings false
+        plugin /usr/lib/mosquitto_dynamic_security.so
+        plugin_opt_config_file /mosquitto/config/dynamic-security.json
+        persistence true
+        persistence_location /mosquitto/data
+        log_dest topic
+        log_dest stdout
+        log_timestamp true
+        log_timestamp_format %Y-%m-%dT%H:%M:%S%z
+        log_type all
+
+        #MQTT Listener
+        listener 8883
+        protocol mqtt
+        certfile /home/mounica1/{{ CSR_commonName }}.pem
+        keyfile /home/mounica1/{{ CSR_commonName }}.key
+        cafile /home/mounica1/magna_global_fullchain.pem
+        # minimum version of the TLS protocol
+        tls_version tlsv1.2
+
+        #Websocket Listener
+        listener 443
+        protocol websockets
+        certfile /home/mounica1/{{ CSR_commonName }}.pem
+        keyfile /home/mounica1/{{ CSR_commonName }}.key
+        cafile /home/mounica1/magna_global_fullchain.pem
+        # minimum version of the TLS protocol
+        tls_version tlsv1.2
+        EOF'
+      args:
+        executable: /bin/bash
+
+    - name: Run script file
+      shell: |
+        chmod +x ./test.sh
+        ./test.sh
+      args:
+        executable: /bin/bash        
