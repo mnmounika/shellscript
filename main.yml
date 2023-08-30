@@ -1,7 +1,5 @@
 ---
 - name: CI
-  hosts: localhost
-  gather_facts: no
   environment:
     CSR_countryName: "US"
     CSR_stateOrProvinceName: "Michigan"
