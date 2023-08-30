@@ -77,8 +77,8 @@
         #Websocket Listener
         listener 443
         protocol websockets
-        certfile /home/mounica1/{{ CSR_commonName }}.pem
-        keyfile /home/mounica1/{{ CSR_commonName }}.key
+        certfile /home/mounica1/$CSR_commonName.pem
+        keyfile /home/mounica1/$CSR_commonName.key
         cafile /home/mounica1/magna_global_fullchain.pem
         # minimum version of the TLS protocol
         tls_version tlsv1.2
