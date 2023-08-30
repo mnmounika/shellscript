@@ -13,7 +13,7 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
-    
+      
     - name: Generate certificate
       shell: |
         echo "Cert creation starts"
@@ -33,5 +33,12 @@
         ls -lrt
         echo "ls -lrt"
         echo "Cert creation ends"
+      args:
+        executable: /bin/bash
+
+    - name: Create folder certs
+      command: >
+        sudo mkdir -p /home/mounica1/certs &&
+        sudo cp -R /home/mounica1{{ CSR_commonName }}.key /home/mounica1/certs/
       args:
         executable: /bin/bash
