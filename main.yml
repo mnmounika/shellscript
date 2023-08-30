@@ -38,7 +38,7 @@
 
     - name: Create folder certs
       shell: |
-        sudo mkdir -p /home/mounica1/certs &&
-        sudo cp -R /home/mounica1{{ CSR_commonName }}.key /home/mounica1/certs/
+        sudo mkdir -p /home/mounica1/certs
+        echo "::$CSR_commonName.key got Moved!!!!"
       args:
         executable: /bin/bash
