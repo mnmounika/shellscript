@@ -7,7 +7,6 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
-     tasks:
     - name: Install Docker
       shell: |
         curl -fsSL https://get.docker.com -o get-docker.sh
