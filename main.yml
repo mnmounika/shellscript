@@ -44,7 +44,7 @@
       args:
         executable: /bin/bash
 
-  - name: Create directory config,data
+    - name: Create directory config,data
       shell: |
         sudo mkdir -p /home/mounica1/config
         sudo mkdir -p /home/mounica1/data
@@ -91,4 +91,4 @@
         chmod +x ./test.sh
         ./test.sh
       args:
-        executable: /bin/bash        
+        executable: /bin/bash
