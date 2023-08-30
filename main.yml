@@ -7,3 +7,33 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
+     tasks:
+    - name: Install Docker
+      shell: |
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        sudo usermod -aG docker $USER
+      args:
+        executable: /bin/bash
+
+    - name: Generate certificate
+      shell: |
+        echo "Cert creation starts"
+        openssl req \
+        -nodes \
+        -newkey rsa:2048 \
+        -subj "/C=$CSR_countryName/ST=$CSR_stateOrProvinceName/L=$CSR_localityName/O=Magna International/OU=$CSR_organizationalUnitName/CN=$CSR_commonName" \
+        -addext "keyUsage = digitalSignature, keyEncipherment" \
+        -addext "extendedKeyUsage = serverAuth, clientAuth" \
+        -addext "subjectAltName = DNS:$CSR_commonName" \
+        -keyout $CSR_commonName.key \
+        -out $CSR_commonName.csr
+        echo "::$CSR_commonName.key got created"
+        echo "::$CSR_commonName.csr got created"
+        echo "pwd"
+        pwd
+        ls -lrt
+        echo "ls -lrt"
+        echo "Cert creation ends"
+      args:
+        executable: /bin/bash
