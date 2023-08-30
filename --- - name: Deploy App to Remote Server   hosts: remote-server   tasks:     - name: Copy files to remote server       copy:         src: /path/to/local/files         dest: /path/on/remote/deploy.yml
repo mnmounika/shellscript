@@ -1,9 +1,0 @@
----
-- name: Deploy App to Remote Server
-  hosts: remote-server
-  tasks:
-    - name: Copy files to remote server
-      copy:
-        src: /home/runner/work/shellscript/shellscript
-        dest: /home/mounica1/shellscript
-      become: yes
