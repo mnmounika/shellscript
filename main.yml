@@ -1,6 +1,6 @@
 ---
 - name: Deploy App to Remote Server
-  hosts: remote-server
+  hosts: all
   tasks:
     - name: Copy files to remote server
       copy:
