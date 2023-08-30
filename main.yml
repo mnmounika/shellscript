@@ -88,7 +88,7 @@
 
     - name: Run script file
       shell: |
-        chmod +x ./test.sh
-        ./test.sh
+        chmod +x /home/mounica1/shellscript/test.sh
+        sh /home/mounica1/shellscript/test.sh
       args:
         executable: /bin/bash
