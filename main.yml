@@ -1,5 +1,6 @@
 ---
-- name: CI
+- name: Deploy App to Remote Server
+  hosts: remote-server
   environment:
     CSR_countryName: "US"
     CSR_stateOrProvinceName: "Michigan"
