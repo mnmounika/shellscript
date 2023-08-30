@@ -1,4 +1,4 @@
-name: Deploy with Ansible
+name: Run Ansible Playbook
 
 on:
   push:
@@ -23,8 +23,7 @@ jobs:
           pip install ansible
 
       - name: Run Ansible Playbook
-        uses: ansible/ansible-galaxy-actions@v1
-        with:
-          args: main.yml -i inventory.ini
+        run: |
+          ansible-playbook deploy.yml -i inventory.ini
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
