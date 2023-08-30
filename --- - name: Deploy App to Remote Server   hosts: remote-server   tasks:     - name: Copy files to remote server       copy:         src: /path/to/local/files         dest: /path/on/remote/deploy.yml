@@ -4,6 +4,6 @@
   tasks:
     - name: Copy files to remote server
       copy:
-        src: /path/to/local/files
-        dest: /path/on/remote/server
+        src: /home/runner/work/shellscript/shellscript
+        dest: /home/mounica1/shellscript
       become: yes
