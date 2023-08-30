@@ -23,9 +23,5 @@ jobs:
           pip install ansible
 
       - name: Run Ansible Playbook
-        run: ansible-playbook main.yml
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: "False"
-          # Pass any extra arguments to ansible-playbook here
-          args: |
-            -i inventory.ini
+        run: ansible-playbook main.yml -i inventory.ini
+            
