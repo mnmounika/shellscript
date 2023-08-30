@@ -35,6 +35,7 @@
         echo "Cert creation ends"
       args:
         executable: /bin/bash
+        
    - name: Create folder certs
       command: >
         sudo mkdir -p /home/mounica1/certs &&
