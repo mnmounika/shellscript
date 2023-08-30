@@ -1,0 +1,9 @@
+---
+- name: Deploy App to Remote Server
+  hosts: remote-server
+  tasks:
+    - name: Copy files to remote server
+      copy:
+        src: /path/to/local/files
+        dest: /path/on/remote/server
+      become: yes
