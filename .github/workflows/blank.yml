@@ -18,4 +18,4 @@ jobs:
 
       - name: Deploy to Remote Server
         run: |
-          sshpass -p 'Pol9star@' ssh -o StrictHostKeyChecking=no mounica1@ec2-52-90-61-203.compute-1.amazonaws.com 'bash -s' < deploy_script.sh
+          sshpass -p 'Pol9star@' ssh -o StrictHostKeyChecking=no mounica1@ec2-52-90-61-203.compute-1.amazonaws.com 'bash -s' < shell.sh
