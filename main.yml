@@ -8,13 +8,13 @@
     CSR_organizationalUnitName: "Vehma International"
     CSR_commonName: "cse-plant1-uns.magna.global"
   tasks:
-    - name: Copy files to remote server
+   - name: Copy files to remote server
       copy:
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
 
-    - name: Set up Docker
+   - name: Set up Docker
       run: |
         sudo yum update -y
         sudo amazon-linux-extras install docker -y
@@ -23,7 +23,7 @@
         sudo systemctl enable docker
         docker --version
       
-    - name: Generate certificate
+   - name: Generate certificate
       shell: |
         echo "Cert creation starts"
         openssl req \
