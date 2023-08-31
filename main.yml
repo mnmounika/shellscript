@@ -13,6 +13,7 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
+      
     - name: Set up Docker
       run: |
         sudo yum update -y
