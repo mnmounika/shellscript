@@ -22,6 +22,8 @@
         sudo service docker start
         sudo usermod -aG docker $USER
         sudo systemctl enable docker
+        # Create /etc/containers/nodocker to quiet messages
+        sudo touch /etc/containers/nodocker
         docker --version
 
     - name: Generate certificate
