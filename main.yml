@@ -13,6 +13,15 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
+
+    - name: Set up Docker
+      run: |
+        sudo yum update -y
+        sudo amazon-linux-extras install docker -y
+        sudo service docker start
+        sudo usermod -aG docker $USER
+        sudo systemctl enable docker
+        docker --version
       
     - name: Generate certificate
       shell: |
