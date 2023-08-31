@@ -2,19 +2,18 @@
 - name: Deploy App to Remote Server
   hosts: all
   environment:
-    CSR_countryName: "US"
-    CSR_stateOrProvinceName: "Michigan"
-    CSR_localityName: "Troy"
-    CSR_organizationalUnitName: "Vehma International"
-    CSR_commonName: "cse-plant1-uns.magna.global"
+    CSR_countryName: US
+    CSR_stateOrProvinceName: Michigan
+    CSR_localityName: Troy
+    CSR_organizationalUnitName: Vehma International
+    CSR_commonName: cse-plant1-uns.magna.global
   tasks:
-   - name: Copy files to remote server
+    - name: Copy files to remote server
       copy:
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
-
-   - name: Set up Docker
+    - name: Set up Docker
       run: |
         sudo yum update -y
         sudo amazon-linux-extras install docker -y
@@ -22,29 +21,43 @@
         sudo usermod -aG docker $USER
         sudo systemctl enable docker
         docker --version
-      
-   - name: Generate certificate
-      shell: |
+    - name: Generate certificate
+      shell: >
         echo "Cert creation starts"
+
         openssl req \
+
         -nodes \
+
         -newkey rsa:2048 \
+
         -subj "/C=$CSR_countryName/ST=$CSR_stateOrProvinceName/L=$CSR_localityName/O=Magna International/OU=$CSR_organizationalUnitName/CN=$CSR_commonName" \
+
         -addext "keyUsage = digitalSignature, keyEncipherment" \
+
         -addext "extendedKeyUsage = serverAuth, clientAuth" \
+
         -addext "subjectAltName = DNS:$CSR_commonName" \
+
         -keyout $CSR_commonName.key \
+
         -out $CSR_commonName.csr
+
         echo "::$CSR_commonName.key got created"
+
         echo "::$CSR_commonName.csr got created"
+
         echo "pwd"
+
         pwd
+
         ls -lrt
+
         echo "ls -lrt"
+
         echo "Cert creation ends"
       args:
         executable: /bin/bash
-
     - name: Create folder certs
       shell: |
         sudo mkdir -p /home/mounica1/certs
@@ -52,14 +65,12 @@
         echo "::$CSR_commonName.key got Moved!!!!"
       args:
         executable: /bin/bash
-
     - name: Create directory config,data
       shell: |
         sudo mkdir -p /home/mounica1/config
         sudo mkdir -p /home/mounica1/data
       args:
         executable: /bin/bash
-
     - name: Create file
       shell: |
         sudo bash -c 'cat > /home/mounica1/config/mosquitto.conf << EOF
@@ -94,7 +105,6 @@
         EOF'
       args:
         executable: /bin/bash
-
     - name: Run script file
       shell: |
         chmod +x /home/mounica1/shellscript/test.sh
