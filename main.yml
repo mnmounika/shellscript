@@ -13,66 +13,61 @@
         src: /home/runner/work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
-      
+
     - name: Set up Docker
-      run: |
+      become: yes
+      shell: |
         sudo yum update -y
         sudo amazon-linux-extras install docker -y
         sudo service docker start
         sudo usermod -aG docker $USER
         sudo systemctl enable docker
         docker --version
+
     - name: Generate certificate
-      shell: >
+      become: yes
+      shell: |
         echo "Cert creation starts"
 
         openssl req \
-
         -nodes \
-
         -newkey rsa:2048 \
-
         -subj "/C=$CSR_countryName/ST=$CSR_stateOrProvinceName/L=$CSR_localityName/O=Magna International/OU=$CSR_organizationalUnitName/CN=$CSR_commonName" \
-
         -addext "keyUsage = digitalSignature, keyEncipherment" \
-
         -addext "extendedKeyUsage = serverAuth, clientAuth" \
-
         -addext "subjectAltName = DNS:$CSR_commonName" \
-
         -keyout $CSR_commonName.key \
-
         -out $CSR_commonName.csr
 
         echo "::$CSR_commonName.key got created"
-
         echo "::$CSR_commonName.csr got created"
-
         echo "pwd"
-
         pwd
-
         ls -lrt
-
         echo "ls -lrt"
-
         echo "Cert creation ends"
       args:
         executable: /bin/bash
+
     - name: Create folder certs
+      become: yes
       shell: |
         sudo mkdir -p /home/mounica1/certs
         sudo cp -R /home/mounica1/$CSR_commonName.key /home/mounica1/certs/
         echo "::$CSR_commonName.key got Moved!!!!"
       args:
         executable: /bin/bash
+
     - name: Create directory config,data
+      become: yes
       shell: |
         sudo mkdir -p /home/mounica1/config
         sudo mkdir -p /home/mounica1/data
       args:
         executable: /bin/bash
+
     - name: Create file
+      become: yes
       shell: |
         sudo bash -c 'cat > /home/mounica1/config/mosquitto.conf << EOF
         per_listener_settings false
@@ -106,7 +101,9 @@
         EOF'
       args:
         executable: /bin/bash
+
     - name: Run script file
+      become: yes
       shell: |
         chmod +x /home/mounica1/shellscript/test.sh
         sh /home/mounica1/shellscript/test.sh
