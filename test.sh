@@ -14,9 +14,9 @@ docker run -d \
   --name $MOSQUITTO_CONTAINER_NAME \
   -p 8883:8883 \
   -p 443:443 \
-  --volume /opt/mosquitto/certs:/mosquitto/certs \
-  --volume /opt/mosquitto/data:/mosquitto/data \
-  --volume /opt/mosquitto/config:/mosquitto/config \
+  --volume /home/mounica1/certs:/mosquitto/certs \
+  --volume /home/mounica1/data:/mosquitto/data \
+  --volume /home/mounica1/config:/mosquitto/config \
   --restart unless-stopped  \
   eclipse-mosquitto
 
@@ -28,7 +28,7 @@ docker restart $MOSQUITTO_CONTAINER_NAME
 
 # Step 4: Create Cedalo Container
 docker run -d \
-  --volume /opt/mosquitto/certs/magna_global_fullchain.pem:/management-center/certs/magna_global_fullchain.pem \
+  --volume /home/mounica1/certs/magna_global_fullchain.pem:/management-center/certs/magna_global_fullchain.pem \
   --name cedalo-management-center \
   -p 8088:8088 \
   --env CEDALO_MC_BROKER_ID=mosquitto \
