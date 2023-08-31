@@ -18,7 +18,7 @@
       become: yes
       shell: |
         sudo yum update -y
-        sudo amazon-linux-extras install docker -y
+        sudo yum install docker -y
         sudo service docker start
         sudo usermod -aG docker $USER
         sudo systemctl enable docker
