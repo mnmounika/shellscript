@@ -11,7 +11,7 @@
     - name: Copy files to remote server
       copy:
         src: /home/runner/work/shellscript/shellscript/
-        dest: /home/mounica1/shellscript
+        dest: /home/mounica1
       become: yes
 
     - name: Set up Docker
