@@ -1,0 +1,115 @@
+---
+- name: Deploy App to Remote Server
+  hosts: all
+  environment:
+    CSR_countryName: US
+    CSR_stateOrProvinceName: Michigan
+    CSR_localityName: Troy
+    CSR_organizationalUnitName: Vehma International
+    CSR_commonName: cse-plant1-uns.magna.global
+  tasks:
+    - name: Copy files to remote server
+      copy:
+        src: /home/runner/work/shellscript/shellscript/
+        dest: /home/mounica1/shellscript
+      become: yes
+
+    - name: Set up Docker
+      become: yes
+      shell: |
+        sudo apt-get update
+        sudo apt-get -y install docker.io
+        # sudo yum update -y
+        # sudo yum install docker -y
+        # sudo service docker start
+        # sudo usermod -aG docker $USER
+        # sudo systemctl enable docker
+        # # Create /etc/containers/nodocker to quiet messages
+        # sudo touch /etc/containers/nodocker
+        # docker --version
+
+    - name: Generate certificate
+      become: yes
+      shell: |
+        echo "Cert creation starts"
+
+        openssl req \
+        -nodes \
+        -newkey rsa:2048 \
+        -subj "/C=$CSR_countryName/ST=$CSR_stateOrProvinceName/L=$CSR_localityName/O=Magna International/OU=$CSR_organizationalUnitName/CN=$CSR_commonName" \
+        -addext "keyUsage = digitalSignature, keyEncipherment" \
+        -addext "extendedKeyUsage = serverAuth, clientAuth" \
+        -addext "subjectAltName = DNS:$CSR_commonName" \
+        -keyout $CSR_commonName.key \
+        -out $CSR_commonName.csr
+
+        echo "::$CSR_commonName.key got created"
+        echo "::$CSR_commonName.csr got created"
+        echo "pwd"
+        pwd
+        ls -lrt
+        echo "ls -lrt"
+        echo "Cert creation ends"
+      args:
+        executable: /bin/bash
+
+    - name: Create folder certs
+      become: yes
+      shell: |
+        sudo mkdir -p /home/mounica1/certs
+        sudo cp -R /home/mounica1/$CSR_commonName.key /home/mounica1/certs/
+        echo "::$CSR_commonName.key got Moved!!!!"
+      args:
+        executable: /bin/bash
+
+    - name: Create directory config,data
+      become: yes
+      shell: |
+        sudo mkdir -p /home/mounica1/config
+        sudo mkdir -p /home/mounica1/data
+      args:
+        executable: /bin/bash
+
+    - name: Create file
+      become: yes
+      shell: |
+        sudo bash -c 'cat > /home/mounica1/config/mosquitto.conf << EOF
+        per_listener_settings false
+        plugin /usr/lib/mosquitto_dynamic_security.so
+        plugin_opt_config_file /mosquitto/config/dynamic-security.json
+        persistence true
+        persistence_location /mosquitto/data
+        log_dest topic
+        log_dest stdout
+        log_timestamp true
+        log_timestamp_format %Y-%m-%dT%H:%M:%S%z
+        log_type all
+
+        #MQTT Listener
+        listener 8883
+        protocol mqtt
+        certfile /home/mounica1/$CSR_commonName.pem
+        keyfile /home/mounica1/$CSR_commonName.key
+        cafile /home/mounica1/magna_global_fullchain.pem
+        # minimum version of the TLS protocol
+        tls_version tlsv1.2
+
+        #Websocket Listener
+        listener 443
+        protocol websockets
+        certfile /home/mounica1/$CSR_commonName.pem
+        keyfile /home/mounica1/$CSR_commonName.key
+        cafile /home/mounica1/magna_global_fullchain.pem
+        # minimum version of the TLS protocol
+        tls_version tlsv1.2
+        EOF'
+      args:
+        executable: /bin/bash
+
+    - name: Run script file
+      become: yes
+      shell: |
+        chmod +x /home/mounica1/shellscript/test.sh
+        sh /home/mounica1/shellscript/test.sh
+      args:
+        executable: /bin/bash
