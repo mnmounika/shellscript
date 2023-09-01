@@ -24,6 +24,6 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook umain.yml -i inventory.ini -vvvv
+          ansible-playbook -vvv umain.yml -i inventory.ini -vvvv
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
