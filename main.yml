@@ -10,7 +10,7 @@
   tasks:
     - name: Copy files to remote server
       copy:
-        src: /home/runner/work/shellscript/shellscript/
+        src: /home/ubuntu/actions-runner/_work/shellscript/shellscript/
         dest: /home/mounica1/shellscript
       become: yes
 
